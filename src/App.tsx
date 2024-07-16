@@ -1,33 +1,57 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Reclaim } from '@reclaimprotocol/js-sdk';
+import { QRCode } from 'react-qrcode-logo';
+import { JsonView, allExpanded, darkStyles, defaultStyles } from 'react-json-view-lite';
+import 'react-json-view-lite/dist/index.css';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [qrCode, setQrCode] = useState<string | null>(null)
+  const [proof, setProof] = useState<any>(null)
+
+
+  const getVerificationReq = async () => {
+    const APP_ID = "0xb8C9d07ABe9698A2075e88a205B0dd3BC0AfF9C5";
+    const reclaimClient = new Reclaim.ProofRequest(APP_ID);
+    const providerIds = [
+      '1bba104c-f7e3-4b58-8b42-f8c0346cdeab', // Steam ID
+    ];
+    await reclaimClient.buildProofRequest(providerIds[0])
+    const APP_SECRET = "0x5841f1f00e25052d4577744046758ad8260b35d0c1b915a7b897f5904a884682"  // your app secret key.
+    reclaimClient.setSignature(
+      await reclaimClient.generateSignature(APP_SECRET)
+    )
+    const { requestUrl, statusUrl } =
+      await reclaimClient.createVerificationRequest()
+
+    console.log('requestUrl', requestUrl)
+    console.log('statusUrl', statusUrl)
+    setQrCode(requestUrl)
+    await reclaimClient.startSession({
+      onSuccessCallback: proof => {
+        console.log('Verification success', proof)
+        // Your business logic here
+        setProof(proof)
+      },
+      onFailureCallback: error => {
+        console.error('Verification failed', error)
+        // Your business logic here to handle the error
+      }
+    })
+  };
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      hello
+
+      <button onClick={getVerificationReq}>Get QR Code</button>
+      {qrCode && <QRCode value={qrCode} size={256} fgColor="#000000" logoImage="https://reclaim.ai/wp-content/uploads/2021/06/reclaim-logo.png" />}
+
+      {proof && <JsonView data={proof} shouldExpandNode={allExpanded} style={defaultStyles} />}
+
+
     </>
   )
 }
