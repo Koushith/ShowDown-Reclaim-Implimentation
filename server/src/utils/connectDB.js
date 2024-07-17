@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 export const connectDB = async () => {
-    const connectionStr = process.env.MONGO_URI || "mongodb+srv://test_db_admin:ur64Rwuoh9h31HWa@test-i.0qbjxom.mongodb.net/showDown?retryWrites=true&w=majority&appName=test-i"
+    const connectionStr = process.env.MONGO_URI
     try {
         const conn = await mongoose.connect(connectionStr)
 
