@@ -25,6 +25,8 @@ function App() {
   const playModalSound = useHoverSound(ModalSound);
   const navigate = useNavigate();
 
+  console.log("url", UPDATE_USER);
+
   const getVerificationReq = async () => {
     if (!user) {
       setShowSignInPrompt(true);
