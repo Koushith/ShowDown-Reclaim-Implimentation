@@ -6,7 +6,7 @@ import { User } from '../models/user.js';
 export const register = async (req, res) => {
     try {
         const { displayName, uid, email, steamId } = req.body;
-        console.log(displayName, uid, email, steamId);
+        // console.log(displayName, uid, email, steamId);
 
         if(!displayName || !uid || !email) {
             return res.status(400).json({ error: 'All fields are required' });
@@ -18,7 +18,7 @@ export const register = async (req, res) => {
         }
 
         const user = await User.create({ username: displayName, userUid: uid, email, steamId });
-        console.log(user);
+        //  console.log(user);
 
         if(user) {
             return res.status(201).json({
@@ -29,7 +29,7 @@ export const register = async (req, res) => {
         }
 
     } catch(error) {
-        console.error(`Error: ${error.message}`);
+        //   console.error(`Error: ${error.message}`);
         res.status(500).json({ error: 'Internal server error', isSuccess: false, message: error.message, error });
     }
 };
@@ -74,7 +74,7 @@ export const updateUser = async (req, res) => {
         const { id } = req.params;
         const { steamId, isQualified } = req.body;
         const user = await User.findOne({ email: id });
-        console.log("user", user);
+        //   console.log("user", user);
         if(user) {
 
             user.steamId = JSON.stringify(steamId) || user.steamId;
