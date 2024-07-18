@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Reclaim } from "@reclaimprotocol/js-sdk";
 import { QRCode } from "react-qrcode-logo";
 import "react-json-view-lite/dist/index.css";
-import { signInWithGoogle, signOut } from "./utils";
+import { signInWithGoogle } from "./utils";
 import { useAudio } from "./hooks/useAudio";
 import ThemeSound from "./assets/cod-theme.mp3";
 import { AppContainer, Button, SignInPromptContainer } from "./app.styles";
@@ -43,8 +43,7 @@ function App() {
     reclaimClient.setSignature(
       await reclaimClient.generateSignature(APP_SECRET)
     );
-    const { requestUrl, statusUrl } =
-      await reclaimClient.createVerificationRequest();
+    const { requestUrl } = await reclaimClient.createVerificationRequest();
 
     setQrCode(requestUrl);
     await reclaimClient.startSession({
@@ -75,7 +74,7 @@ function App() {
           });
 
           const data = await updateSteamId.json();
-          //console.log("updateSteamId", data);
+          console.log("updateSteamId", data);
         }
       },
       onFailureCallback: (error) => {
@@ -84,11 +83,6 @@ function App() {
         alert("Verification failed");
       },
     });
-  };
-
-  const signOutHandler = async () => {
-    await signOut();
-    setUser(null);
   };
 
   const signinHandler = async () => {

@@ -1,6 +1,5 @@
 import styled, { keyframes } from "styled-components";
 import CODThemeCover from "./assets/cod.jpg";
-import HoverSound from "./assets/hover.mp3";
 
 export const loadingAnimation = keyframes`
   0% {
