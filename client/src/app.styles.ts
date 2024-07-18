@@ -96,7 +96,7 @@ export const AppContainer = styled.div`
     background-color: rgba(255, 255, 255, 0.1);
     padding: 1rem;
     min-width: 500px;
-    min-height: 500px;
+    max-height: 500px;
     border-radius: 10px;
     display: flex;
     align-items: center;
