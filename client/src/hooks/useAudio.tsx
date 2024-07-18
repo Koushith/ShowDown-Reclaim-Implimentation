@@ -33,6 +33,10 @@ export const useAudio = (url: string) => {
     }
   };
 
+  const playBGSound = () => {
+    audioRef.current?.play();
+  };
+
   useEffect(() => {
     const audio = audioRef.current;
     if (isPlaying) {
@@ -42,5 +46,5 @@ export const useAudio = (url: string) => {
     }
   }, [isPlaying]);
 
-  return { isPlaying, togglePlayPause };
+  return { isPlaying, togglePlayPause, playBGSound };
 };

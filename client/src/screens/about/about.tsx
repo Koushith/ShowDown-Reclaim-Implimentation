@@ -94,6 +94,6 @@ export const AnimatedText = styled.div`
     font-size: 1.5rem;
     line-height: 1.5;
     font-weight: 100;
-    animation: ${textFlow} 20s linear infinite;
+    animation: ${textFlow} 10s linear infinite;
   }
 `;

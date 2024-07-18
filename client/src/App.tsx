@@ -20,7 +20,7 @@ function App() {
 
   const [QRClicked, setQRClicked] = useState(false);
 
-  const { isPlaying, togglePlayPause } = useAudio(ThemeSound);
+  const { isPlaying, togglePlayPause, playBGSound } = useAudio(ThemeSound);
   const playHoverSound = useHoverSound(HoverSound);
   const playModalSound = useHoverSound(ModalSound);
   const navigate = useNavigate();
@@ -75,8 +75,8 @@ function App() {
             }),
           });
 
-          const data = await updateSteamId.json();
-          console.log("updateSteamId", data);
+          await updateSteamId.json();
+          //console.log("updateSteamId", data);
         }
       },
       onFailureCallback: (error) => {
@@ -95,7 +95,7 @@ function App() {
       setShowSignInPrompt(false);
       setUser(user);
       //TODO: update later
-      const saveToDb = await fetch(USER_REGISTER, {
+      await fetch(USER_REGISTER, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,9 +107,7 @@ function App() {
           displayName: user?.displayName,
         }),
       });
-      const data = await saveToDb.json();
-
-      console.log("saveToDb", data);
+      // const data = await saveToDb.json();
     }
   };
 
@@ -150,10 +148,8 @@ function App() {
     }
   };
 
-  console.log("proof", proof);
-
   useEffect(() => {
-    console.log("App mounted");
+    playBGSound();
     getUser();
   }, [user]);
 
