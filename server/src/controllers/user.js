@@ -1,5 +1,12 @@
 import express from 'express';
+import path from 'path';
 import { User } from '../models/user.js';
+import { fileURLToPath } from 'url';
+import { Parser } from 'json2csv';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 
 // create user
@@ -104,3 +111,44 @@ export const getUserBySteamId = async (req, res) => {
     res.send('get user by steamId');
 }
 
+
+
+// Serve the HTML form
+export const serveForm = (req, res) => {
+    const indexPath = path.join(__dirname, '../html/index.html');
+    res.sendFile(indexPath);
+};
+
+
+// Handle the export request
+export const exportData = async (req, res) => {
+    try {
+        const { startDate, format } = req.query;
+
+        if(!startDate) {
+            return res.status(400).send('Start date is required');
+        }
+
+        const users = await User.find({
+            updatedAt: {
+                $gte: new Date(startDate)
+            }
+        }).lean();
+
+        if(format === 'csv') {
+            const parser = new Parser();
+            const csv = parser.parse(users);
+            res.header('Content-Type', 'text/csv');
+            res.attachment('users.csv');
+            return res.send(csv);
+        } else if(format === 'json') {
+            res.header('Content-Type', 'application/json');
+            res.attachment('users.json');
+            return res.send(JSON.stringify(users, null, 2));
+        } else {
+            return res.status(400).send('Invalid format');
+        }
+    } catch(error) {
+        res.status(500).json({ error: 'Internal server error', isSuccess: false, message: error.message });
+    }
+};

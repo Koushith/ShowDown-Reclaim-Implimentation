@@ -2,7 +2,7 @@ const isDev = import.meta.env.VITE_ENVIRONMENT === "development";
 
 export const BASE_URL = isDev
   ? "http://localhost:3000"
-  : " https://showdown-reclaim-implimentation.onrender.com";
+  : "https://showdown-reclaim-implimentation.onrender.com";
 export const API_URL = `${BASE_URL}/api`;
 
 export const USER_REGISTER = `${API_URL}/user/register`;
