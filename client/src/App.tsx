@@ -173,14 +173,24 @@ function App() {
         <ul style={{ display: QRClicked || showSignInPrompt ? "none" : "" }}>
           <li onMouseEnter={playHoverSound}>
             {" "}
-            {proof ? (
-              <p>
-                {" "}
-                Your Steam ID is :{" "}
-                <span style={{ color: "#fe820f" }}>{proof}</span>{" "}
-              </p>
+            {user ? (
+              proof ? (
+                <p>
+                  Your Steam ID is :{" "}
+                  <span style={{ color: "#fe820f" }}>{proof}</span>
+                </p>
+              ) : (
+                <p
+                  onClick={getVerificationReq}
+                  style={{ cursor: "pointer", color: "#007bff" }}
+                >
+                  Verify Your Steam ID
+                </p>
+              )
             ) : (
-              <p onClick={getVerificationReq}>Verify Your Steam ID</p>
+              <p onClick={signinHandler}>
+                Please sign in and process towards Steam verification.
+              </p>
             )}
           </li>
           <li onMouseEnter={playHoverSound}>
