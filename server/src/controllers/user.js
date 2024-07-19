@@ -13,7 +13,6 @@ const __dirname = path.dirname(__filename);
 export const register = async (req, res) => {
     try {
         const { displayName, uid, email, steamId } = req.body;
-        // console.log(displayName, uid, email, steamId);
 
         if(!displayName || !uid || !email) {
             return res.status(400).json({ error: 'All fields are required' });
@@ -24,8 +23,7 @@ export const register = async (req, res) => {
             return res.status(400).json({ error: 'User already exists' });
         }
 
-        const user = await User.create({ username: displayName, userUid: uid, email, steamId });
-        //  console.log(user);
+        const user = await User.create({ username: displayName, userUid: uid, email, steamId: steamId || null });
 
         if(user) {
             return res.status(201).json({
@@ -36,10 +34,14 @@ export const register = async (req, res) => {
         }
 
     } catch(error) {
-        //   console.error(`Error: ${error.message}`);
-        res.status(500).json({ error: 'Internal server error', isSuccess: false, message: error.message, error });
+        if(error.code === 11000) {
+            // Handle duplicate key error
+            return res.status(400).json({ error: 'Duplicate entry detected', isSuccess: false, message: error.message });
+        }
+        res.status(500).json({ error: 'Internal server error', isSuccess: false, message: error.message });
     }
 };
+
 
 
 //get user
