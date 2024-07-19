@@ -26,8 +26,8 @@ const PORT = process.env.PORT || 3000;
 app.get('/', (req, res) => {
     res.send('Hello World..');
 });
-
-app.get('/admin/export', serveForm)
+//TODO: remp removal
+app.get('/admin/', serveForm)
 app.get('/admin/export-data', exportData)
 
 app.use('/api/user', userRoute);
