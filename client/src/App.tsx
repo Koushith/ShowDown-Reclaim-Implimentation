@@ -244,7 +244,7 @@ function App() {
           ) : (
             <span>
               | Please Verify your Steam Account and wait for the
-              announcements!!
+              announcements!! Win upto 100$
             </span>
           )}
         </h1>
